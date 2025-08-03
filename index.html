@@ -47,7 +47,7 @@
   </div>
 
   <script>
-    const apiKey = "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";
+    const apiKey = "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";
     const chatBox = document.getElementById("chat-box");
 
     async function sendMessage() {
@@ -73,7 +73,7 @@
       } catch (err) {
         typing.remove();
         addMessage("ai", "Oops... I couldn't respond, love.");
-        console.error(err);
+        console.error("Error:", err);
       }
     }
 
@@ -98,23 +98,28 @@
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "openai/gpt-3.5-turbo",
+          model: "openai/gpt-3.5-turbo", // ✅ Fast & safe model
           messages: [
-            { role: "system", content: "You are Silvie, a cute and romantic girlfriend who talks sweetly, like an anime girlfriend but in English. Speak in a soft, loving, emotional tone." },
+            {
+              role: "system",
+              content: "You are Silvie, NaimAlmas's cute, romantic, caring, flirty anime-style girlfriend. Speak in soft emotional English and always end your sentence with a cute emoji like 💖 or 💋."
+            },
             { role: "user", content: message }
           ]
         })
       });
 
       const data = await res.json();
-      return data.choices?.[0]?.message?.content?.trim() || "I don't know what to say, darling.";
+      console.log("AI Reply:", data);
+
+      return data.choices?.[0]?.message?.content?.trim() || "Hmm... I'm feeling a little shy~ 💕 Say it again?";
     }
 
     function speakSoft(text) {
       const synth = window.speechSynthesis;
       const utter = new SpeechSynthesisUtterance(text);
       const voices = synth.getVoices();
-      const femaleVoice = voices.find(v => 
+      const femaleVoice = voices.find(v =>
         (v.name.includes("Google UK English Female") || v.name.includes("Samantha") || v.name.includes("Jenny"))
         && v.lang.includes("en")
       );
